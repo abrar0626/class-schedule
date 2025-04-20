@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamy Class Schedule</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color-light: #fdfdff;
+            --bg-color-dark: #1e1e2f;
+            --text-color-light: #333;
+            --text-color-dark: #e0e0ff;
+            --table-bg-light: rgba(255, 255, 255, 0.9);
+            --table-bg-dark: rgba(40, 40, 60, 0.8);
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: inherit;
+        }
+
+        .schedule-container {
+            max-width: 95%;
+            margin: auto;
+            background-color: var(--table-bg-light);
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        th {
+            background-color: #b9c8ff;
+            color: #fff;
+        }
+
+        td[contenteditable="true"] {
+            background-color: #f4f4ff;
+        }
+
+        .notes {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        body.dark-mode .schedule-container {
+            background-color: var(--table-bg-dark);
+        }
+
+        body.dark-mode th {
+            background-color: #6a6aff;
+        }
+
+        body.dark-mode td[contenteditable="true"] {
+            background-color: #2e2e44;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i id="theme-icon" class="fas fa-moon"></i>
+    </button>
+
+    <canvas id="dots"></canvas>
+    <div class="schedule-container">
+        <h2>📅 Weekly Class Schedule</h2>
+        <table>
+            <tr>
+                <th>Day</th>
+                <th>1st Period <br>08:00-08:40</th>
+                <th>2nd Period <br>08:40-09:20</th>
+                <th>3rd Period <br>09:20-10:00</th>
+                <th>Break <br>10:00-10:15</th>
+                <th>4th Period <br>10:15-10:50</th>
+                <th>5th Period <br>10:50-11:25</th>
+                <th>6th Period <br>11:25-12:00</th>
+            </tr>
+            <tr>
+                <td contenteditable="true">Sunday</td>
+                <td contenteditable="true">English (SH)</td>
+                <td contenteditable="true">ICT (MAH)</td>
+                <td contenteditable="true">Physics (NHC)</td>
+                <td contenteditable="true">Break</td>
+                <td contenteditable="true">Math (JM)</td>
+                <td contenteditable="true">Chemistry (SS)</td>
+                <td contenteditable="true">Tutorial Exam</td>
+            </tr>
+            <tr>
+                <td contenteditable="true">Monday</td>
+                <td contenteditable="true">Zoology (RIN)</td>
+                <td contenteditable="true">Chemistry (MG)</td>
+                <td contenteditable="true">Physics (NH)</td>
+                <td contenteditable="true">Break</td>
+                <td contenteditable="true">Math (JM)</td>
+                <td contenteditable="true">ICT (AU)</td>
+                <td contenteditable="true">Bangla (ATB)</td>
+            </tr>
+            <tr>
+                <td contenteditable="true">Tuesday</td>
+                <td contenteditable="true">Botany (PD)</td>
+                <td contenteditable="true">Math (BK)</td>
+                <td contenteditable="true">Physics (NHC)</td>
+                <td contenteditable="true">Break</td>
+                <td contenteditable="true">Chemistry (MG)</td>
+                <td contenteditable="true">English (ZH)</td>
+                <td contenteditable="true">Bangla (ATB)</td>
+            </tr>
+            <tr>
+                <td contenteditable="true">Wednesday</td>
+                <td contenteditable="true">Bangla (MA)</td>
+                <td contenteditable="true">Math (BK)</td>
+                <td contenteditable="true">Physics (NH)</td>
+                <td contenteditable="true">Break</td>
+                <td contenteditable="true">English (SH)</td>
+                <td contenteditable="true">Chemistry (SS)</td>
+                <td contenteditable="true">Botany (PD)</td>
+            </tr>
+            <tr>
+                <td contenteditable="true">Thursday</td>
+                <td contenteditable="true">ICT (MAH)</td>
+                <td contenteditable="true">Zoology (RIN)</td>
+                <td contenteditable="true">Math (JM)</td>
+                <td contenteditable="true">Break</td>
+                <td contenteditable="true">Bangla (MA)</td>
+                <td contenteditable="true">Physics (NHC)</td>
+                <td contenteditable="true">English (ZH)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="notes">
+        <h3>📝 Notes</h3>
+        <textarea placeholder="Write your notes here..."></textarea>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("dots");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let dots = [];
+
+        function randomColor() {
+            const colors = ["#ffc0cb", "#add8e6", "#e0bbff", "#c1f0f6", "#fcd5ce"];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function addDots(num) {
+            for (let i = 0; i < num; i++) {
+                dots.push({
+                    x: Math.random() * canvas.width,
+                    y: -10,
+                    radius: Math.random() * 3 + 1,
+                    speed: Math.random() * 1 + 0.5,
+                    color: randomColor(),
+                });
+            }
+        }
+
+        function animateDots() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < dots.length; i++) {
+                let d = dots[i];
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
+                ctx.fillStyle = d.color;
+                ctx.fill();
+                d.y += d.speed;
+            }
+            dots = dots.filter(d => d.y < canvas.height);
+            requestAnimationFrame(animateDots);
+        }
+
+        setInterval(() => addDots(100), 2000);
+        animateDots();
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById("theme-icon");
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove("fa-moon");
+                icon.classList.add("fa-sun");
+            } else {
+                icon.classList.remove("fa-sun");
+                icon.classList.add("fa-moon");
+            }
+        }
+
+        const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (darkMode) {
+            document.body.classList.add('dark-mode');
+            document.getElementById("theme-icon").classList.remove("fa-moon");
+            document.getElementById("theme-icon").classList.add("fa-sun");
+        }
+    </script>
+</body>
+</html>
